@@ -36,7 +36,6 @@ public class AdviceService {
     }
 
     private ChatResponse getChatResponse(List<Message> messages) {
-        messages.forEach(e -> System.out.println("Processing: " + e.toString()));
         Instant start = Instant.now();
 
         var response = chatModel.call(
@@ -44,7 +43,7 @@ public class AdviceService {
                         messages,
                         OllamaOptions.builder()
                                 .withModel("llama3.1")
-                                .withFunction("getQuotation")
+                                .withFunction("CurrentQuotation")
                                 .build()
                 )
         );

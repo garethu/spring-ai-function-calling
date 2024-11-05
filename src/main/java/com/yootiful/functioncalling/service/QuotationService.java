@@ -1,6 +1,5 @@
 package com.yootiful.functioncalling.service;
 
-import com.yootiful.functioncalling.model.CryptoSymbol;
 import com.yootiful.functioncalling.model.Quotation;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,12 +13,22 @@ public class QuotationService {
     public QuotationService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    public Quotation fetch(CryptoSymbol cryptoSymbol) {
-        Map<String, Object> responseMap = restTemplate.getForObject(
-                "https://api.diadata.org/v1/quotation/" + cryptoSymbol.name(), Map.class
-        );
 
-        if (responseMap == null) throw new RuntimeException("Could not fetch quotation");
+    public Quotation fetch(String cryptoSymbol) {
+        System.out.println("Fetching quotation for " + cryptoSymbol);
+        Map<String, Object> responseMap = null;
+
+        try {
+            responseMap = restTemplate.getForObject(
+                    "https://api.diadata.org/v1/quotation/" + cryptoSymbol, Map.class
+            );
+        } catch (Exception e) {
+
+        }
+
+        if (responseMap == null) {
+            return new Quotation(null, null, 0.0, 0.0, 0.0);
+        }
 
         return new Quotation(
                 (String) responseMap.get("Symbol"),
