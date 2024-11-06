@@ -4,9 +4,6 @@ import com.yootiful.functioncalling.model.CryptoSymbol;
 import com.yootiful.functioncalling.model.Quotation;
 import com.yootiful.functioncalling.service.QuotationFunction;
 import com.yootiful.functioncalling.service.QuotationService;
-import org.springframework.ai.model.function.FunctionCallback;
-import org.springframework.ai.model.function.FunctionCallbackWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,30 +17,9 @@ import javax.net.ssl.X509TrustManager;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Configuration
 public class BeanProvider {
-    private static final String AVAILABLE_SYMBOLS = Stream.of(CryptoSymbol.values())
-            .map(CryptoSymbol::name)
-            .collect(Collectors.joining(", "));
-
-
-  @Bean
-    public FunctionCallback quotationFunction(@Autowired QuotationService quotationService) {
-       return FunctionCallbackWrapper.builder(new QuotationFunction(quotationService))
-               .withName("CurrentQuotation")
-               .withDescription("""
-                       Get the current quotation of the cryptocurrency by its symbol.
-                       Available symbols are: %s
-                       """.formatted(
-                       Stream.of(CryptoSymbol.values()).map(CryptoSymbol::name)
-                               .collect(Collectors.joining(", "))
-               ))
-               .build();
-   }
-
     @Bean
     @Description("Provides the current quotation of a cryptocurrency by symbol")
     public Function<QuotationFunction.Request, Quotation> getQuotation(QuotationService quotationService) {
