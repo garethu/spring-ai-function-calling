@@ -9,7 +9,6 @@ import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
@@ -22,13 +21,18 @@ public class AdviceService {
     }
 
     public String answer(String text) {
+
         SystemMessage systemMessage = new SystemMessage("""
-                You are a helpful AI assistant that provides insight into cryptocurrencies based
-                on realtime quotations. Answer the user question based on your knowledge about the
-                market and the available tools for retrieving quotation info as needed. If the user's
-                question has nothing to do with cryptocurrencies or the associated markets,
-                just say you don't know the answer.
-                """);
+            You are a helpful AI assistant that provides insight into cryptocurrencies based
+            on realtime quotations. Answer the user's question based on your knowledge about the
+            market and the available tools for retrieving quotation info as needed.
+            
+            Provide the answer in the following conversational format:            
+            "The price for [Name] is [Price]. Yesterday, the price was [PriceYesterday], and yesterday's volume was [VolumeYesterdayUSD]."
+
+            If the user's question has nothing to do with cryptocurrencies or the associated markets,
+            just say, "I don't know the answer."
+            """);
         UserMessage userMessage = new UserMessage(text);
 
         return getChatResponse(List.of(systemMessage, userMessage))
@@ -36,7 +40,6 @@ public class AdviceService {
     }
 
     private ChatResponse getChatResponse(List<Message> messages) {
-        messages.forEach(e -> System.out.println("Processing: " + e.toString()));
         Instant start = Instant.now();
 
         var response = chatModel.call(
@@ -48,13 +51,6 @@ public class AdviceService {
                                 .build()
                 )
         );
-
-        Instant end = Instant.now();
-        Duration timeElapsed = Duration.between(start, end);
-
-        // Display time taken in milliseconds, seconds, or other units as needed
-        System.out.println("Time taken: " + timeElapsed.toMillis() + " milliseconds");
-        System.out.println("Time taken: " + timeElapsed.toSeconds() + " seconds");
 
         return response;
     }
