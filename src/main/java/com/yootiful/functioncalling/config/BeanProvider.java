@@ -1,6 +1,5 @@
 package com.yootiful.functioncalling.config;
 
-import com.yootiful.functioncalling.model.CryptoSymbol;
 import com.yootiful.functioncalling.model.Quotation;
 import com.yootiful.functioncalling.service.QuotationFunction;
 import com.yootiful.functioncalling.service.QuotationService;
@@ -25,7 +24,7 @@ public class BeanProvider {
     public Function<QuotationFunction.Request, Quotation> getQuotation(QuotationService quotationService) {
         return request -> {
             try {
-              return quotationService.fetch(CryptoSymbol.valueOf(request.cryptoSymbol()));
+              return quotationService.fetch(request.symbol());
             }
             catch (Exception e) {
                return new Quotation(null,null,0.0,0.0,0.0);

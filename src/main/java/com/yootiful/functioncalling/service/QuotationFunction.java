@@ -1,6 +1,6 @@
 package com.yootiful.functioncalling.service;
 
-import models.Quotation;
+import com.yootiful.functioncalling.model.Quotation;
 
 import java.util.function.Function;
 
