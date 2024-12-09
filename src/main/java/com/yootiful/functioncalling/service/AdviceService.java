@@ -21,7 +21,7 @@ public class AdviceService {
     }
 
     public String answer(String text) {
-
+        System.out.println("## Get the answer for: " + text);
         SystemMessage systemMessage = new SystemMessage("""
             You are a helpful AI assistant that provides insight into cryptocurrencies based
             on realtime quotations. Answer the user's question based on your knowledge about the

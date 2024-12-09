@@ -14,6 +14,7 @@ public class QuotationService {
         this.restTemplate = restTemplate;
     }
     public Quotation fetch(String symbol) {
+        System.out.println("### Fetching quote for symbol: "  + symbol);
         Map<String, Object> responseMap = restTemplate.getForObject(
                 "https://api.diadata.org/v1/quotation/" +symbol, Map.class
         );
