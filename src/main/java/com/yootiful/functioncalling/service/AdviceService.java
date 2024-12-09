@@ -47,7 +47,7 @@ public class AdviceService {
                         messages,
                         OllamaOptions.builder()
                                 .withModel("llama3.1")
-                                .withFunction("CurrentQuotation")
+                                .withFunction("getQuotation")
                                 .build()
                 )
         );
