@@ -21,7 +21,7 @@ public class AdviceService {
     }
 
     public String answer(String text) {
-        System.out.println("## Get the answer for: " + text);
+        System.out.println("1. Execute the query: " + text);
         SystemMessage systemMessage = new SystemMessage("""
             You are a helpful AI assistant that provides insight into cryptocurrencies based
             on realtime quotations. Answer the user's question based on your knowledge about the
@@ -52,6 +52,7 @@ public class AdviceService {
                 )
         );
 
+        System.out.println("5. Response: " + response.getResult().getOutput().getContent());
         return response;
     }
 }
