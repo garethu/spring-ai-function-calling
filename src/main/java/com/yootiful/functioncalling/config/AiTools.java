@@ -1,7 +1,7 @@
 package com.yootiful.functioncalling.config;
 
+import com.yootiful.functioncalling.model.Question;
 import com.yootiful.functioncalling.model.Quotation;
-import com.yootiful.functioncalling.service.QuotationFunction;
 import com.yootiful.functioncalling.service.QuotationService;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -21,17 +21,16 @@ import java.util.function.Function;
 public class AiTools {
     @Bean
     @Description("Provides the current quotation of a cryptocurrency by symbol")
-    public Function<QuotationFunction.Request, Quotation> getQuotation(QuotationService quotationService) {
+    public Function<Question, Quotation> getQuotation(QuotationService quotationService) {
         return request -> {
             try {
-                return quotationService.fetch(request.cryptoSymbol());
+                return quotationService.fetch(request.text());
             }
             catch (Exception e) {
                 return new Quotation(null,null,0.0,0.0,0.0);
             }
         };
     }
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         ignoreCertificates();

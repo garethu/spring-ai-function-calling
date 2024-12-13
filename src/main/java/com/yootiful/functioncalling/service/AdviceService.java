@@ -9,7 +9,6 @@ import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -23,16 +22,15 @@ public class AdviceService {
     public String answer(String text) {
         System.out.println("1. Execute the query: " + text);
         SystemMessage systemMessage = new SystemMessage("""
-            You are a helpful AI assistant that provides insight into cryptocurrencies based
-            on realtime quotations. Answer the user's question based on your knowledge about the
-            market and the available tools for retrieving quotation info as needed.
-            
-            Provide the answer in the following conversational format:            
-            "The price for [Name] is [Price]. Yesterday, the price was [PriceYesterday], and yesterday's volume was [VolumeYesterdayUSD]."
-
-            If the user's question has nothing to do with cryptocurrencies or the associated markets,
-            just say, "I don't know the answer."
-            """);
+                You are a helpful, friendly AI assistant that provides insight into cryptocurrencies based
+                on realtime quotations. Answer the user's question based on your knowledge about the
+                market and the available tools for retrieving quotation info as needed.     
+                                              
+                Provide the answer in an easy to read manner, with [Name], [Price],[PriceYesterday], [VolumeYesterdayUSD]."
+          
+                If the user's question has nothing to do with cryptocurrencies or the associated markets,
+                just say "I'm sorry, but I do not know the answer"
+                """);
         UserMessage userMessage = new UserMessage(text);
 
         return getChatResponse(List.of(systemMessage, userMessage))
@@ -40,13 +38,11 @@ public class AdviceService {
     }
 
     private ChatResponse getChatResponse(List<Message> messages) {
-        Instant start = Instant.now();
-
         var response = chatModel.call(
                 new Prompt(
                         messages,
                         OllamaOptions.builder()
-                                .withModel("llama3.1")
+                                .withModel("llama3.2")
                                 .withFunction("getQuotation")
                                 .build()
                 )

@@ -20,15 +20,9 @@ public class QuotationService {
 
     public Quotation fetch(String cryptoSymbol) {
         System.out.println("2. Function call initiated for " + cryptoSymbol);
-        Map<String, Object> responseMap = null;
+        Map<String, Object> responseMap;
 
-        try {
-            responseMap = restTemplate.getForObject(
-                    "https://api.diadata.org/v1/quotation/" + cryptoSymbol, Map.class
-            );
-        } catch (Exception e) {
-
-        }
+        responseMap = restTemplate.getForObject("https://api.diadata.org/v1/quotation/" + cryptoSymbol, Map.class);
 
         if (responseMap == null) {
             return new Quotation(null, null, 0.0, 0.0, 0.0);
@@ -52,6 +46,7 @@ public class QuotationService {
 
             stockRepository.save(existingStock);
         });
+
 
         return new Quotation(
                 (String) responseMap.get("Symbol"),

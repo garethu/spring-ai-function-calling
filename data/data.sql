@@ -16,14 +16,16 @@ CREATE TABLE stock (
     symbol VARCHAR(3) UNIQUE NOT NULL,
     min_price DECIMAL NOT NULL,
     alert BOOLEAN NOT NULL,
-    description TEXT
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- Insert data for Bitcoin (BTC)
-INSERT INTO stock (code, min_price, alert, description)
+INSERT INTO stock (symbol, min_price, alert, description)
 VALUES ('BTC', 97000.00, FALSE, 'Bitcoin');
 
 -- Insert data for Tron (TRX)
-INSERT INTO stock (code, min_price, alert, description)
+INSERT INTO stock (symbol, min_price, alert, description)
 VALUES ('TRX', 0.25, TRUE, 'Tron');
+
 
